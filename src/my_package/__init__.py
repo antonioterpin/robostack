@@ -1,5 +1,4 @@
-"""
-My Package - A showcase of RoboStack coding standards.
+"""My Package - A showcase of RoboStack coding standards.
 
 This package demonstrates the coding standards and best practices
 outlined in CONTRIBUTING.md.
