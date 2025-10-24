@@ -27,19 +27,27 @@ If you do not have it yet, install it with:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-To provision the local environment with the development and CUDA extras:
+To provision the local environment with development tools only:
 ```sh
-uv venv
-source .venv/bin/activate
-uv pip install -e '.[dev,cuda12]'
+uv sync --extra dev
 ```
-Skip the `cuda12` extra if you do not need GPU support:
+
+To provision the local environment with both development tools and CUDA support:
 ```sh
-uv pip install -e '.[dev]'
+uv sync --extra dev --extra cuda12
+```
+
+To provision the local environment with CUDA support only:
+```sh
+uv sync --extra cuda12
 ```
 Run the application with (see the [README.md](README.md) for details on the usage):
 ```sh
 uv run python main.py
+```
+To run the pytests:
+```sh
+uv run pytest
 ```
 
 ## Coding style
@@ -60,9 +68,9 @@ Our coding style is inspired to the [Linux kernel coding style](https://www.kern
    - The code should basically read as sentences. This makes it beautiful. Some examples of choices:
         - Prefer boolean namings so that the positive case comes first in conditional statements: `if it_rains: ...`'
         - Give meaningful names, but keep them concise. Avoid unnecessary specifiers in names.
-   - Indentation: 8 characters. Avoid more than 3 indentation levels.
+   - Indentation: 4 characters. Avoid more than 3 indentation levels.
    - Short lines: 80 characters max. Do not cheat with linebreaks "\".
-   - Functions should be short and sweet, and do just one thing. They should fit on one or two screenfuls of text (the ISO/ANSI screen size is 80x24, as we all know), and do one thing and do that well. The maximum length of a function is inversely proportional to the complexity and indentation level of that function. So, if you have a conceptually simple function that is just one long (but simple) case-statement, where you have to do lots of small things for a lot of different cases, it’s OK to have a longer function. If a function implemented to use inside a public API offers functionalities that are not needed across the repo, make it private. If they are useful across the repo, put them in utils. If the implemented functionality is useful across repos (e.g., observability utils) and they match the scope of [goggles](https://github.com/antonioterpin/goggles), open a PR there.
+   - Functions should be short and specialized. The maximum length of a function is inversely proportional to the complexity and indentation level of that function. If a function implemented to use inside a public API offers functionalities that are not needed across the repo, make it private. If they are useful across the repo, put them in utils. If the implemented functionality is useful across repos (e.g., observability utils) and they match the scope of [goggles](https://github.com/antonioterpin/goggles), open a PR there.
    - Spacing: Do not add spaces around (inside) parenthesized expressions. This example is bad: `my_fun( param1 )`. Use one space around (on each side of) most binary and ternary operators, such as any of these: `=  +  -  <  >  *  /  %  |  &  ^  <=  >=  ==  !=  ?  :`. In Python, `:` is also used after class/functions definition. In that case, do not put spaces.
    - Naming: Use `snake_case` for functions and variables, `PascalCase` for classes, `UPPER_SNAKE_CASE` for constants.
    - Default to `dataclasses.dataclass` for simple record-like structures. Prefer `frozen=True` dataclasses.
@@ -75,69 +83,69 @@ Our coding style is inspired to the [Linux kernel coding style](https://www.kern
    
    @dataclass(frozen=True)
    class RobotState:
-        """Immutable state container for robot data."""
-        position: tuple[float, float]
-        velocity: tuple[float, float]
-        battery_level: float = 100.0
+    """Immutable state container for robot data."""
+    position: tuple[float, float]
+    velocity: tuple[float, float]
+    battery_level: float = 100.0
+    
+    def update(self, **kwargs) -> 'RobotState':
+        """Create new state with updated fields.
         
-        def update(self, **kwargs) -> 'RobotState':
-                """Create new state with updated fields.
-                
-                Args:
-                        **kwargs: Fields to update
-                
-                Returns:
-                        RobotState: New state instance with updates
-                """
-                result = replace(self, **kwargs)
-                return result
+        Args:
+            **kwargs: Fields to update
+        
+        Returns:
+            RobotState: New state instance with updates
+        """
+        result = replace(self, **kwargs)
+        return result
    
    class RobotController:
-        """Example of pure methods and external state."""
+    """Example of pure methods and external state."""
+    
+    def calculate_next_position(
+        self, 
+        state: RobotState, 
+        time_delta: float
+    ) -> tuple[float, float]:
+        """Calculate next position.
         
-        def calculate_next_position(
-                self, 
-                state: RobotState, 
-                time_delta: float
-        ) -> tuple[float, float]:
-                """Calculate next position.
-                
-                Args:
-                        state (RobotState): Current robot state
-                        time_delta (float): Time step in seconds
-                
-                Returns:
-                        tuple[float, float]: Next position coordinates
-                """
-                # Single calculation path with single return
-                new_x = state.position[0] + state.velocity[0] * time_delta
-                new_y = state.position[1] + state.velocity[1] * time_delta
-                result = (new_x, new_y)
-                return result
+        Args:
+            state (RobotState): Current robot state
+            time_delta (float): Time step in seconds
         
-        def update_robot_state(
-                self, 
-                state: RobotState, 
-                time_delta: float
-        ) -> RobotState:
-                """Update robot state with new position and battery drain.
-                
-                Args:
-                        state (RobotState): Current robot state
-                        time_delta (float): Time step in seconds
-                
-                Returns:
-                        RobotState: New state with updated position and battery
-                """
-                next_position = self.calculate_next_position(state, time_delta)
-                battery_drain = time_delta * 0.1
-                new_battery = max(0.0, state.battery_level - battery_drain)
-                
-                result = state.update(
-                        position=next_position,
-                        battery_level=new_battery
-                )
-                return result
+        Returns:
+            tuple[float, float]: Next position coordinates
+        """
+        # Single calculation path with single return
+        new_x = state.position[0] + state.velocity[0] * time_delta
+        new_y = state.position[1] + state.velocity[1] * time_delta
+        result = (new_x, new_y)
+        return result
+    
+    def update_robot_state(
+        self, 
+        state: RobotState, 
+        time_delta: float
+    ) -> RobotState:
+        """Update robot state with new position and battery drain.
+        
+        Args:
+            state (RobotState): Current robot state
+            time_delta (float): Time step in seconds
+        
+        Returns:
+            RobotState: New state with updated position and battery
+        """
+        next_position = self.calculate_next_position(state, time_delta)
+        battery_drain = time_delta * 0.1
+        new_battery = max(0.0, state.battery_level - battery_drain)
+        
+        result = state.update(
+            position=next_position,
+            battery_level=new_battery
+        )
+        return result
    ```
    - Have a single return for each function, at the end.
    - Before implementing a functionality, always check that it does not exist yet (in this repo or in goggles) and that you cannot obtaining with a simple modification of an existing one (ensuring compatibility or with a refactor).
