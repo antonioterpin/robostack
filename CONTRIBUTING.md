@@ -14,6 +14,7 @@ This page summarizes the development workflow and software engineering practices
 ├── src/                    # Source code
 ├── tests/                  # Test suite
 ├── docs/                   # Documentation
+├── scripts/                # Utils, like custom hooks
 ├── .pre-commit-config.yaml # Code quality hooks
 ├── pyproject.toml          # Project configuration
 ├── Dockerfile              # Container setup
@@ -53,12 +54,17 @@ uv run pytest
 ## Coding style
 The `Coding style validation` action will fail if the pre-commit checks do not pass. To make sure that these are checked automatically on push, run:
 ```sh
-pre-commit install --hook-type pre-push
+pre-commit install --hook-type pre-commit
 ```
 To run the pre-commit checks on specific files:
 ```bash
 pre-commit run --files <files>
 ```
+Or all files:
+```bash
+pre-commit run --all-files
+```
+
 If for some reason you really want to ignore them during commit/push, add `--no-verify`.
 
 Our coding style is inspired to the [Linux kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html), to the [Python Google coding style](https://google.github.io/styleguide/pyguide.html), and to the [JAX framework](https://docs.jax.dev). We elaborate on some key elements below. Please read both of the above documents, and prioritize the elements described below (sometimes we simply copy paste from the above guides to emphasize a principle).
@@ -80,40 +86,40 @@ Our coding style is inspired to the [Linux kernel coding style](https://www.kern
    Example:
    ```python
    from dataclasses import dataclass, replace
-   
+
    @dataclass(frozen=True)
    class RobotState:
     """Immutable state container for robot data."""
     position: tuple[float, float]
     velocity: tuple[float, float]
     battery_level: float = 100.0
-    
+
     def update(self, **kwargs) -> 'RobotState':
         """Create new state with updated fields.
-        
+
         Args:
             **kwargs: Fields to update
-        
+
         Returns:
             RobotState: New state instance with updates
         """
         result = replace(self, **kwargs)
         return result
-   
+
    class RobotController:
     """Example of pure methods and external state."""
-    
+
     def calculate_next_position(
-        self, 
-        state: RobotState, 
+        self,
+        state: RobotState,
         time_delta: float
     ) -> tuple[float, float]:
         """Calculate next position.
-        
+
         Args:
             state (RobotState): Current robot state
             time_delta (float): Time step in seconds
-        
+
         Returns:
             tuple[float, float]: Next position coordinates
         """
@@ -122,25 +128,25 @@ Our coding style is inspired to the [Linux kernel coding style](https://www.kern
         new_y = state.position[1] + state.velocity[1] * time_delta
         result = (new_x, new_y)
         return result
-    
+
     def update_robot_state(
-        self, 
-        state: RobotState, 
+        self,
+        state: RobotState,
         time_delta: float
     ) -> RobotState:
         """Update robot state with new position and battery drain.
-        
+
         Args:
             state (RobotState): Current robot state
             time_delta (float): Time step in seconds
-        
+
         Returns:
             RobotState: New state with updated position and battery
         """
         next_position = self.calculate_next_position(state, time_delta)
         battery_drain = time_delta * 0.1
         new_battery = max(0.0, state.battery_level - battery_drain)
-        
+
         result = state.update(
             position=next_position,
             battery_level=new_battery
@@ -193,7 +199,7 @@ uv run pytest -q --cov=src/my_package --cov-report=term-missing
 ```
 
 Principles:
-- All public functions must have tests. Better if all functions have tests. 
+- All public functions must have tests. Better if all functions have tests.
 - We measure coverage, but it should not be an objective. It is a good metric until someone starts to game it.
 - Tests should be written BEFORE the feature. That is, we follow a [Test-Driven-Development](https://en.wikipedia.org/wiki/Test-driven_development) pattern.
 - Divide integration tests from unit tests.

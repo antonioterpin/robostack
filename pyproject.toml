@@ -52,18 +52,8 @@ cuda12 = [
 max_line_length = 80
 indent_size = 4
 aggressive = 2
-exclude = [
-        ".eggs",
-        ".git", 
-        ".hg",
-        ".mypy_cache",
-        ".tox",
-        ".venv",
-        "_build",
-        "buck-out",
-        "build",
-        "dist",
-]
+in_place = true
+exclude = ".eggs,.git,.hg,.mypy_cache,.tox,.venv,_build,buck-out,build,dist"
 
 # isort configuration (updated for autopep8 compatibility)
 [tool.isort]
@@ -92,6 +82,13 @@ warn_no_return = true
 warn_unreachable = true
 strict_equality = true
 show_error_codes = true
+explicit_package_bases = true
+mypy_path = "src"
+
+# Allow untyped decorators in test files for Hypothesis
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_decorators = false
 
 # Pydocstyle configuration
 [tool.pydocstyle]
