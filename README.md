@@ -58,7 +58,6 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 - Code style requirements and automated checks
 - Testing standards and coverage expectations
 - PR preparation and commit message conventions
-I postponed writing this template for quite too long. Over time I may have reviewed a tons of PRs and gave feedback on the SWE. If you believe some of this feedback was rather unconventional but good, please open a PR to this template to edit [Contributing Guide](./CONTRIBUTING.md).. Please do the same if you think some rules should be amended or we should introduce new ones 🙏.
 
 ## 📄 License
 
