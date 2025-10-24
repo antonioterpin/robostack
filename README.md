@@ -1,11 +1,14 @@
 # 🤖 RoboStack - A template for industry-grade research code
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![arXiv](https://img.shields.io/badge/arXiv-2508.10480-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://www.arxiv.org/abs/2508.10480)
+[![GitHub stars](https://img.shields.io/github/stars/antonioterpin/robostack?style=social)](https://github.com/antonioterpin/robostack/stargazers)
+[![codecov](https://codecov.io/gh/antonioterpin/robostack/graph/badge.svg?token=J49B8TFDSM)](https://codecov.io/gh/antonioterpin/robostack)
 [![Tests](https://github.com/antonioterpin/robostack/actions/workflows/test.yaml/badge.svg)](https://github.com/antonioterpin/robostack/actions/workflows/test.yaml)
 [![Code Style](https://github.com/antonioterpin/robostack/actions/workflows/code-style.yaml/badge.svg)](https://github.com/antonioterpin/robostack/actions/workflows/code-style.yaml)
+[![PyPI version](https://img.shields.io/pypi/v/pinet-hcnn.svg)](https://pypi.org/project/pinet-hcnn)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 
 **Ready to build something amazing?** Fork this template and start your next research project with a solid foundation! 🚀
 
