@@ -29,7 +29,6 @@ dependencies = [
     "matplotlib>=3.10.1",
     "optax>=0.2.4",
     "flax>=0.10.2",
-    "cvxpy>=1.6.6",
     "wandb>=0.20.1",
     "portal>=0.1.0",
 ]
