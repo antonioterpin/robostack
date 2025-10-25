@@ -17,7 +17,7 @@ classifiers = [
   "License :: OSI Approved :: Apache-2.0 License",
   "Operating System :: OS Independent",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 
 # Core dependencies
 dependencies = [
@@ -31,6 +31,7 @@ dependencies = [
     "flax>=0.10.2",
     "cvxpy>=1.6.6",
     "wandb>=0.20.1",
+    "portal>=0.1.0",
 ]
 
 # Optional dependencies
@@ -43,8 +44,8 @@ dev = [
     "pre_commit==4.0.1",
     "tomli"
 ]
-cuda12 = [
-    "jax[cuda12_pip]>=0.6.2",
+cuda = [
+    "jax[cuda12]>=0.6.2",
 ]
 
 # autopep8 configuration for 4-space indentation
