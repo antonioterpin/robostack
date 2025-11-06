@@ -56,6 +56,15 @@ The `Coding style validation` action will fail if the pre-commit checks do not p
 ```sh
 pre-commit install --hook-type pre-commit
 ```
+
+Our pre-commit configuration includes several automated checks:
+
+- **Black**: Code formatting
+- **Ruff**: Linting, docstring checks, and modern typing enforcement
+- **PyUpgrade**: Automatic modernization of Python syntax (Python 3.10+)
+- **Unimport**: Detection and removal of unused imports/packages
+- **Standard hooks**: YAML validation, trailing whitespace, end-of-file fixes
+
 To run the pre-commit checks on specific files:
 ```bash
 pre-commit run --files <files>
