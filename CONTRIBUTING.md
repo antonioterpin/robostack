@@ -60,9 +60,8 @@ pre-commit install --hook-type pre-commit
 Our pre-commit configuration includes several automated checks:
 
 - **Black**: Code formatting
-- **Ruff**: Linting, docstring checks, and modern typing enforcement
+- **Ruff**: Linting, docstring checks, modern typing enforcement, and unused import detection
 - **PyUpgrade**: Automatic modernization of Python syntax (Python 3.10+)
-- **Unimport**: Detection and removal of unused imports/packages
 - **Standard hooks**: YAML validation, trailing whitespace, end-of-file fixes
 
 To run the pre-commit checks on specific files:
